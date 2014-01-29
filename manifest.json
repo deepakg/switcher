@@ -1,0 +1,30 @@
+{
+  "name": "Site Switcher",
+  "version": "1.0",
+  "manifest_version": 2,
+  "description": "Switch between dev/test/production boxes with a keystroke",
+  "icons": {
+    "48" : "img/switcher48.png",
+    "128" : "img/switcher128.png"
+  },
+  "background": {
+      "page": "background.html"
+  },
+  "page_action": {
+      "default_icon": {
+          "19": "img/switcher48.png"
+      },
+      "default_title": "Switcher",
+      "default_popup": "popup.html"
+  },
+  "options_page": "options.html",
+  "content_scripts": [
+    {
+       "matches": ["http://*/*", "https://*/*"],
+       "js": ["js/switcher.js"]
+    }
+  ],
+  "permissions": [
+    "tabs"
+  ]
+}
