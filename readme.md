@@ -9,3 +9,5 @@ But you are not constrained to just that. You can create multiple groups of site
 <img src="screenshots/switcher-in-action.png"/>
 
 But more than that, I hope it's something useful that you can extend.
+
+I'd like to thank my employer - booking.com - for allowing me to publish this code under a permissive MIT license.
