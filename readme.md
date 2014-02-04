@@ -11,3 +11,9 @@ But you are not constrained to just that. You can create multiple groups of site
 But more than that, I hope it's something useful that you can extend.
 
 I'd like to thank my employer - booking.com - for allowing me to publish this code under a permissive MIT license.
+
+Haven't installed a Chrome extension froms source before? Follow these steps:
+
+1. In Chrome's address bar, type: chrome://extensions
+2. Click the 'Developer mode' checkbox
+3. Click the 'Load unpacked extension...' button and point the file open dialog to the folder where you downloaded/cloned Switcher.
