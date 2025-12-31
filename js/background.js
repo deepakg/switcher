@@ -1,88 +1,52 @@
-var sites = {};
-var groups = [];
-loadSettings();
-function loadSettings() {
-    sites = JSON.parse(localStorage.sites) || {};
-    groups = JSON.parse(localStorage.groups) || [];
+// Helper to get data from storage since localStorage is gone
+async function getSettings() {
+    const data = await chrome.storage.local.get(['sites', 'groups']);
+    return {
+        sites: data.sites || {},
+        groups: data.groups || []
+    };
 }
 
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-      console.log(request);
-      // console.log(sites);
-      // console.log(groups);
-      // console.log(sites[request.site]);
-      // console.log(groups[sites[request.site]]);
-      if(sites[request.site] != undefined) {
-          //console.log("gevonden");
-          sendResponse(groups[sites[request.site]]);
-      }
-
-      if(sites[request.site] != undefined && request.popup) {
-          sendResponse(groups[sites[request.site]]);
-      }
+// Listen for messages from content scripts or popup
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    getSettings().then(({ sites, groups }) => {
+        if (sites[request.site] !== undefined) {
+            sendResponse(groups[sites[request.site]]);
+        }
+    });
+    return true; // Keep channel open for async response
 });
 
-// Listen for any changes to the URL of any tab.
-chrome.tabs.onUpdated.addListener(updateListener);
-chrome.tabs.onCreated.addListener(createListener);
-chrome.tabs.onReplaced.addListener(replaceListener);
-    
-function replaceListener(added, removed) {
-    chrome.tabs.get(added, createListener);
-}
-                                   
-function createListener(tab) {
-    showSwitcher(tab);
-}
-
-function updateListener(tabId, changeInfo, tab) {
-    if(tabId && changeInfo && changeInfo.status && changeInfo.status == "loading") {
+// Listen for tab updates
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    if (changeInfo.status === "loading") {
         showSwitcher(tab);
     }
-}
+});
 
-function showSwitcher(tab) {
-    if(tab && tab.id && tab.url) {
-        var uri = URI(tab.url);
-        if(uri) {
-            var origin = uri.protocol() + "://" + uri.hostname();
-            // console.log(origin);
-            // console.log(tabId);
-            // console.log(sites[origin]);
-            if(sites[origin] != undefined) {
-                //console.log("showing");
-                chrome.pageAction.show(tab.id);
-            }
-            else {
-                //console.log("hiding");
-                chrome.pageAction.hide(tab.id);
-            }
+chrome.tabs.onCreated.addListener(showSwitcher);
+
+// Replaced tabs (rare, but handled)
+chrome.tabs.onReplaced.addListener((addedTabId) => {
+    chrome.tabs.get(addedTabId, showSwitcher);
+});
+
+async function showSwitcher(tab) {
+    if (!tab?.url || !tab.id) return;
+
+    try {
+        const { sites } = await getSettings();
+        // Using native URL object instead of external URI library
+        const url = new URL(tab.url);
+        const origin = `${url.protocol}//${url.hostname}`;
+
+        if (sites[origin] !== undefined) {
+            // MV3 uses chrome.action instead of pageAction
+            chrome.action.enable(tab.id);
+        } else {
+            chrome.action.disable(tab.id);
         }
+    } catch (e) {
+        // Ignore internal chrome:// pages or invalid URLs
     }
-
 }
-
-// chrome.extension.onRequest.addListener(function(request, sender, callback) {
-//     if(request == 'getGroup') {
-//         var group = {};
-//         if(sites[request.origin] != undefined) {
-//             group = groups[sites[request.origin]];
-//             callback(group);
-//             return;
-//         }
-//     }
-
-// });
-
-// chrome.extension.onMessage.addListener(
-//   function(request, sender, sendResponse) {
-//     if(request.action == "getGroup") {
-//       var group = {};
-//       if (sites[request.origin] != undefined) {
-//         group = groups[sites[request.origin]];
-//       }
-//       sendResponse({group: group, keypressed: request.keypressed});
-//     }
-//   }
-// );
