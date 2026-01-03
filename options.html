@@ -1,48 +1,48 @@
 <!doctype html>
 <html ng-app>
-	<head>
-		<script src="js/angular.min.js"></script>
-		<script src="js/url.js"></script>
-		<script src="js/options.js"></script>
-		<style type="text/css">
-          body {
-              font-family: Arial;
-          }
-          ul {
-             float:left;
-             list-style-type:none;
-             margin:2px;
-          }
-          input[type='text'] {
-              padding:3px;
-          }
-          button {
-              padding:5px;
-              cursor:pointer;
-          }
-          input[type='text'].url {
-              width:200px;
-          }
-          label {
-              font-size:10pt;
-              cursor:pointer;
-          }
-        </style>
-	</head>
-	<body>
-		<h2>Website Groups</h2>
-		<div ng-controller="OptionCtrl">
-			<ul ng-repeat="group in groups track by $index">
-				<input type="checkbox" ng-model="group.params" id="chk_{{$index}}"><label for="chk_{{$index}}">Pass Querystring</label>
-				<button ng-click="remove_group($index)">Remove Group</button>
-				<li ng-repeat="website in group.websites track by $index">
-					<input type="text" maxlength="1" size="1" ng-model="website.shortcut"><input class="url" type="text" ng-model="website.url"><button ng-click="remove_item($parent.$index, $index)">Remove Item</button>
-				</li><button ng-click="add_item($index)">Add Item</button>
-			</ul>
-			<div style="clear:both">&nbsp;</div>
-			<button ng-click="add_group()">Add Group</button>
-			<!-- button ng-click="dump()">log</button> -->
-			<button ng-click="save()">Save</button>
-		</div>
-	</body>
+  <head>
+    <script src="js/angular.min.js"></script>
+    <script src="js/url.js"></script>
+    <script src="js/options.js"></script>
+    <style type="text/css">
+      body {
+          font-family: Arial;
+      }
+      ul {
+          float:left;
+          list-style-type:none;
+          margin:2px;
+      }
+      input[type='text'] {
+          padding:3px;
+      }
+      button {
+          padding:5px;
+          cursor:pointer;
+      }
+      input[type='text'].url {
+          width:200px;
+      }
+      label {
+          font-size:10pt;
+          cursor:pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Website Groups</h2>
+    <div ng-controller="OptionCtrl">
+      <ul ng-repeat="group in groups track by $index">
+	<input type="checkbox" ng-model="group.params" id="chk_{{$index}}"><label for="chk_{{$index}}">Pass Querystring</label>
+	<button ng-click="remove_group($index)">Remove Group</button>
+	<li ng-repeat="website in group.websites track by $index">
+	  <input type="text" maxlength="1" size="1" ng-model="website.shortcut"><input class="url" type="text" ng-model="website.url"><button ng-click="remove_item($parent.$index, $index)">Remove Item</button>
+	</li><button ng-click="add_item($index)">Add Item</button>
+      </ul>
+      <div style="clear:both">&nbsp;</div>
+      <button ng-click="add_group()">Add Group</button>
+      <!-- button ng-click="dump()">log</button> -->
+<button ng-click="save()">Save</button>
+</div>
+</body>
 </html>
