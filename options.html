@@ -30,6 +30,9 @@
   </head>
   <body>
     <h2>Website Groups</h2>
+    <p>
+      In the first textbox enter a one letter shortcut you will use switch to that website. In the second, enter the url including the protocol (http:// or https://).
+    <p>
     <div ng-controller="OptionCtrl">
       <ul ng-repeat="group in groups track by $index">
 	<input type="checkbox" ng-model="group.params" id="chk_{{$index}}"><label for="chk_{{$index}}">Pass Querystring</label>
