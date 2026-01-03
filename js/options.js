@@ -96,4 +96,8 @@ function OptionCtrl($scope) {
             window.close();
         });
     };
+
+    $scope.close = function () {
+	window.close()
+    }
 }
