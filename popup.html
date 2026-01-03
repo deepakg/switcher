@@ -5,7 +5,9 @@
 	<script type="text/javascript" src="js/popup.js"></script>
 	<style type="text/css">
       body {
-          font-family:arial;
+	  width:300px;
+	  font-size:12pt;
+	  font-family:helvetica,arial;
       }
       ul {
           list-style-type:none;
@@ -15,14 +17,15 @@
       }
       li {
           padding:2px;
-          font-size:10pt;
-          color:#999;
+          font-size:12pt;
+          color:#777;
       }
       span {
-          padding:2px;
+          padding:8px;
       }
       a {
-          padding:2px;
+          padding:8px;
+	  text-decoration: none;
       }
       a:focus {
           outline:1px dotted #CCC;
@@ -30,9 +33,20 @@
       a:visited {
           color:#F90
       }
+      a:hover {
+	  text-decoration:underline;
+      }
+      div {
+	  font-size:14pt;
+      }
+      p {
+	  margin-bottom: 4px;
+	  color: #333;
+      }
     </style>
   </head>
   <body>
+    <p>Sites in current group:</p>
 	  <div id="links">
 	  </div>
   </body>
